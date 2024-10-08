@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Processing</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <button class="button" id="btnEqualize">Histogram Ekualisasi</button>
+            <button class="button" id="btnBlur">Blur</button>
+            <button class="button" id="btnEdgeDetection">Edge Detection</button>
+            <button class="button" id="faceBtn">Face Detection</button>
+            <button class="button" id="btnContour">Contour-based Segmentation</button>
+            <button class="button" id="btnColorSpace">Konversi Ruang Warna</button>
+            <button class="button" id="btnNormalize">Normalisasi Gambar</button>
+            <button class="button" id="btnUnsharpMasking">Unsharp Masking</button>
+
+
+        </div>
+        <div class="main-content">
+            <h1 id="main-title">Histogram Ekualisasi</h1>
+            
+            <!-- Histogram Ekualisasi Section -->
+            <div id="equalizeSection" class="upload-buttons">
+                <form id="uploadFormEqualize" enctype="multipart/form-data">
+                    <input type="file" id="uploadEqualize" name="file" accept="image/*">
+                    <label for="equalizeMode">Pilih Mode:</label>
+                    <select id="equalizeMode">
+                        <option value="grayscale">Grayscale</option>
+                        <option value="rgb">RGB</option>
+                    </select>
+                    <button type="submit" id="submitEqualizeBtn" class="btn">Upload</button>
+                </form>
+                <div class="output-row">
+                    <div class="output">
+                        <h2>Gambar Asli</h2>
+                        <img id="originalEqualizeImg" src="#" alt="Gambar Asli" />
+                    </div>
+                    <div class="output">
+                        <h2>Histogram Asli</h2>
+                        <img id="originalHistImg" src="#" alt="Histogram Asli" />
+                    </div>
+                </div>
+                <div class="output-row">
+                    <div class="output">
+                        <h2>Gambar setelah dilakukan ekualisasi</h2>
+                        <img id="equalizedImg" src="#" alt="Gambar Ekualisasi" />
+                    </div>
+                    <div class="output">
+                        <h2>Histogram Ekualisasi</h2>
+                        <img id="equalizedHistImg" src="#" alt="Histogram Ekualisasi" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blur Section -->
+            <div id="blurSection" style="display: none;">
+                <form id="uploadFormBlur" enctype="multipart/form-data">
+                    <input type="file" id="uploadBlur" name="file" accept="image/*">
+                    <label for="blurLevel">Tingkat Blur:</label>
+                    <select id="blurLevel">
+                        <option value="low">Rendah</option>
+                        <option value="medium">Menengah</option>
+                        <option value="high">Tinggi</option>
+                    </select>
+                    <button type="submit" id="submitBlurBtn" class="btn">Upload</button>
+                </form>
+                <div class="output-row">
+                    <div class="output">
+                        <h2>Gambar Asli</h2>
+                        <img id="originalBlurImg" src="#" alt="Gambar Asli" />
+                    </div>
+                    <div class="output">
+                        <h2>Gambar Hasil Blur</h2>
+                        <img id="blurredImg" src="#" alt="Gambar Blur" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edge Detection Section -->
+            <div id="edgeDetectionSection" style="display: none;">
+                <form id="uploadFormEdge" enctype="multipart/form-data">
+                    <input type="file" id="uploadEdge" name="file" accept="image/*">
+                    <label for="edgeMethod">Metode Edge Detection:</label>
+                    <select id="edgeMethod">
+                        <option value="roberts">Roberts Mask</option>
+                        <option value="sobel">Sobel Operator</option>
+                        <option value="prewitt">Prewitt Operator</option>
+                        <option value="canny">Canny Edge</option>
+                        <option value="log">Laplacian of Gaussian</option>
+                    </select>
+                    <button type="submit" id="submitEdgeBtn" class="btn">Upload</button>
+                </form>
+                <div class="output-row">
+                    <div class="output">
+                        <h2>Gambar Asli</h2>
+                        <img id="originalEdgeImg" src="#" alt="Gambar Asli" />
+                    </div>
+                    <div class="output">
+                        <h2>Hasil Edge Detection</h2>
+                        <img id="edgeImg" src="#" alt="Hasil Edge Detection" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Face Detection Section -->
+            <div id="faceSection" style="display: none;">
+                <div class="upload-buttons">
+                    <form id="uploadFormFace" enctype="multipart/form-data">
+                        <input type="file" id="uploadFace" name="file" accept="image/*">
+                        <button type="submit" class="btn">Upload</button>
+                    </form>
+                </div>
+                <div class="output-row">
+                    <div class="output">
+                        <h2>Gambar Asli</h2>
+                        <img id="originalImgFace" src="#" alt="Gambar Asli" />
+                    </div>
+                    <div class="output">
+                        <h2>Hasil Face Detection</h2>
+                        <img id="faceDetectedImg" src="#" alt="Hasil Face Detection" />
+                        <p id="faceCountText"></p>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Contour-based Segmentation Section -->
+            <div id="contourSection" style="display: none;">
+                <form id="uploadFormContour" enctype="multipart/form-data">
+                    <input type="file" id="uploadContour" name="file" accept="image/*">
+                    <button type="submit" id="submitContourBtn" class="btn">Upload</button>
+                </form>
+                <div class="output-row">
+                    <div class="output">
+                        <h2>Gambar Asli</h2>
+                        <img id="originalContourImg" src="#" alt="Gambar Asli" />
+                    </div>
+                    <div class="output">
+                        <h2>Hasil Contour Segmentation</h2>
+                        <img id="contourImg" src="#" alt="Hasil Contour Segmentation" />
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Color Space Conversion Section -->
+            <div id="colorSpaceSection" style="display: none;">
+                <form id="uploadFormColorSpace" enctype="multipart/form-data">
+                    <input type="file" id="uploadColorSpace" name="file" accept="image/*" required>
+                    <label for="colorSpace">Pilih Ruang Warna:</label>
+                    <select id="colorSpace" required>
+                        <option value="gray">Grayscale</option>
+                        <option value="hsv">HSV</option>
+                        <option value="lab">Lab</option>
+                        <option value="yuv">YUV</option>
+                    </select>
+                    <button type="submit" id="submitColorSpaceBtn" class="btn">Upload</button>
+                </form>
+                <div class="output-row">
+                    <div class="output">
+                        <h2>Gambar Asli</h2>
+                        <img id="originalColorSpaceImg" src="#" alt="Gambar Asli" style="max-width: 100%; height: auto;" />
+                    </div>
+                    <div class="output">
+                        <h2>Gambar Konversi Ruang Warna</h2>
+                        <img id="convertedColorSpaceImg" src="#" alt="Gambar Konversi" style="max-width: 100%; height: auto;" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Normalization Section -->
+            <div id="normalizeSection" style="display: none;">
+                <form id="uploadFormNormalize" enctype="multipart/form-data">
+                    <input type="file" id="uploadNormalize" name="file" accept="image/*" required>
+                    <button type="submit" id="submitNormalizeBtn" class="btn">Upload</button>
+                </form>
+                <div class="output-row">
+                    <div class="output">
+                        <h2>Gambar Asli</h2>
+                        <img id="originalNormalizeImg" src="#" alt="Gambar Asli" />
+                    </div>
+                    <div class="output">
+                        <h2>Gambar setelah Normalisasi</h2>
+                        <img id="normalizedImg" src="#" alt="Gambar Normalisasi" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Unsharp Masking Section -->
+            <div id="unsharpMaskingSection" style="display: none;">
+                <form id="uploadFormUnsharpMasking" enctype="multipart/form-data">
+                    <input type="file" id="uploadUnsharpMasking" name="file" accept="image/*">
+                    <label for="maskingLevel">Tingkat Masking:</label>
+                    <select id="maskingLevel">
+                        <option value="low">Rendah</option>
+                        <option value="medium">Menengah</option>
+                        <option value="high">Tinggi</option>
+                    </select>
+                    <button type="submit" id="submitUnsharpMaskingBtn" class="btn">Upload</button>
+                </form>
+                <div class="output-row">
+                    <div class="output">
+                        <h2>Gambar Asli</h2>
+                        <img id="originalUnsharpMaskingImg" src="#" alt="Gambar Asli" />
+                    </div>
+                    <div class="output">
+                        <h2>Hasil Unsharp Masking</h2>
+                        <img id="unsharpMaskedImg" src="#" alt="Hasil Unsharp Masking" />
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        // Toggle sections based on the button clicked
+        document.getElementById('btnEqualize').addEventListener('click', () => {
+            document.getElementById('main-title').innerText = 'Histogram Ekualisasi';
+            document.getElementById('equalizeSection').style.display = 'block';
+            document.getElementById('blurSection').style.display = 'none';
+            document.getElementById('edgeDetectionSection').style.display = 'none';
+            document.getElementById('faceSection').style.display = 'none';
+        });
+
+        document.getElementById('btnBlur').addEventListener('click', () => {
+            document.getElementById('main-title').innerText = 'Blur';
+            document.getElementById('equalizeSection').style.display = 'none';
+            document.getElementById('blurSection').style.display = 'block';
+            document.getElementById('edgeDetectionSection').style.display = 'none';
+            document.getElementById('faceSection').style.display = 'none';
+        });
+
+        document.getElementById('btnEdgeDetection').addEventListener('click', () => {
+            document.getElementById('main-title').innerText = 'Edge Detection';
+            document.getElementById('equalizeSection').style.display = 'none';
+            document.getElementById('blurSection').style.display = 'none';
+            document.getElementById('edgeDetectionSection').style.display = 'block';
+            document.getElementById('faceSection').style.display = 'none';
+        });
+
+        document.getElementById('faceBtn').addEventListener('click', () => {
+            document.getElementById('main-title').innerText = 'Face Detection';
+            document.getElementById('equalizeSection').style.display = 'none';
+            document.getElementById('blurSection').style.display = 'none';
+            document.getElementById('edgeDetectionSection').style.display = 'none';
+            document.getElementById('faceSection').style.display = 'block';
+        });
+
+        // Toggle sections based on the button clicked
+        document.getElementById('btnContour').addEventListener('click', () => {
+            document.getElementById('main-title').innerText = 'Contour-based Segmentation';
+            document.getElementById('equalizeSection').style.display = 'none';
+            document.getElementById('blurSection').style.display = 'none';
+            document.getElementById('edgeDetectionSection').style.display = 'none';
+            document.getElementById('faceSection').style.display = 'none';
+            document.getElementById('contourSection').style.display = 'block';
+        });
+
+        // Button to show Color Space Conversion section
+        document.getElementById('btnColorSpace').addEventListener('click', () => {
+            document.getElementById('main-title').innerText = 'Konversi Ruang Warna';
+            document.getElementById('equalizeSection').style.display = 'none';
+            document.getElementById('blurSection').style.display = 'none';
+            document.getElementById('edgeDetectionSection').style.display = 'none';
+            document.getElementById('faceSection').style.display = 'none';
+            document.getElementById('contourSection').style.display = 'none';
+            document.getElementById('colorSpaceSection').style.display = 'block';
+        });
+
+         // Toggle sections based on the button clicked
+        document.getElementById('btnNormalize').addEventListener('click', () => {
+            document.getElementById('main-title').innerText = 'Normalisasi Gambar';
+            document.getElementById('normalizeSection').style.display = 'block';
+            document.getElementById('equalizeSection').style.display = 'none';
+            document.getElementById('blurSection').style.display = 'none';
+            document.getElementById('edgeDetectionSection').style.display = 'none';
+            document.getElementById('faceSection').style.display = 'none';
+            document.getElementById('contourSection').style.display = 'none';
+            document.getElementById('colorSpaceSection').style.display = 'none';
+            document.getElementById('affineSection').style.display = 'none';
+        });
+
+         // Toggle sections based on the button clicked for Unsharp Masking
+         document.getElementById('btnUnsharpMasking').addEventListener('click', () => {
+            document.getElementById('main-title').innerText = 'Unsharp Masking';
+            document.getElementById('equalizeSection').style.display = 'none';
+            document.getElementById('blurSection').style.display = 'none';
+            document.getElementById('edgeDetectionSection').style.display = 'none';
+            document.getElementById('faceSection').style.display = 'none';
+            document.getElementById('contourSection').style.display = 'none';
+            document.getElementById('colorSpaceSection').style.display = 'none';
+            document.getElementById('normalizeSection').style.display = 'none';
+            document.getElementById('unsharpMaskingSection').style.display = 'block';
+        });
+    
+        // Handle Equalization form submission
+        document.getElementById('uploadFormEqualize').onsubmit = async function (event) {
+            event.preventDefault();
+            const fileInput = document.getElementById('uploadEqualize');
+            const mode = document.getElementById('equalizeMode').value;
+            const formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+
+            // Fetch ekualisasi gambar
+            const response = await fetch(`/upload/equalize/?mode=${mode}`, {
+                method: 'POST',
+                body: formData
+            });
+            const imgBlob = await response.blob();
+            const imgUrl = URL.createObjectURL(imgBlob);
+
+            document.getElementById('equalizedImg').src = imgUrl;
+            document.getElementById('originalEqualizeImg').src = URL.createObjectURL(fileInput.files[0]);
+
+            // Fetch original histogram
+            const originalHistResponse = await fetch(`/upload/equalize/?mode=${mode}&type=original_hist`, {
+                method: 'POST',
+                body: formData
+            });
+            const originalHistBlob = await originalHistResponse.blob();
+            document.getElementById('originalHistImg').src = URL.createObjectURL(originalHistBlob);
+
+            // Fetch equalized histogram
+            const equalizedHistResponse = await fetch(`/upload/equalize/?mode=${mode}&type=equalized_hist`, {
+                method: 'POST',
+                body: formData
+            });
+            const equalizedHistBlob = await equalizedHistResponse.blob();
+            document.getElementById('equalizedHistImg').src = URL.createObjectURL(equalizedHistBlob);
+        };
+
+        // Handle Blur form submission
+        document.getElementById('uploadFormBlur').onsubmit = async function (event) {
+            event.preventDefault();
+            const fileInput = document.getElementById('uploadBlur');
+            const blurLevel = document.getElementById('blurLevel').value;
+            const formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+
+            const response = await fetch(`/upload/blur/?blur_level=${blurLevel}`, {
+                method: 'POST',
+                body: formData
+            });
+
+            const imgBlob = await response.blob();
+            const imgUrl = URL.createObjectURL(imgBlob);
+
+            document.getElementById('blurredImg').src = imgUrl;
+            document.getElementById('originalBlurImg').src = URL.createObjectURL(fileInput.files[0]);
+        };
+
+        // Handle Edge Detection form submission
+        document.getElementById('uploadFormEdge').onsubmit = async function (event) {
+            event.preventDefault();
+            const fileInput = document.getElementById('uploadEdge');
+            const edgeMethod = document.getElementById('edgeMethod').value;
+            const formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+
+            const response = await fetch(`/upload/edge/?method=${edgeMethod}`, {
+                method: 'POST',
+                body: formData
+            });
+
+            const imgBlob = await response.blob();
+            const imgUrl = URL.createObjectURL(imgBlob);
+
+            document.getElementById('edgeImg').src = imgUrl;
+            document.getElementById('originalEdgeImg').src = URL.createObjectURL(fileInput.files[0]);
+        };
+
+        // Handle Face Detection form submission
+        document.getElementById('uploadFormFace').onsubmit = async function (event) {
+            event.preventDefault();
+            const fileInput = document.getElementById('uploadFace');
+            const formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+
+            const response = await fetch('/upload_face/', {
+                method: 'POST',
+                body: formData
+            });
+
+            const imgBlob = await response.blob();
+            const imgUrl = URL.createObjectURL(imgBlob);
+            const faceCount = response.headers.get("X-Face-Count");
+
+            // Update image and face count text
+            document.getElementById('faceDetectedImg').src = imgUrl;
+            document.getElementById('originalImgFace').src = URL.createObjectURL(fileInput.files[0]);
+            document.getElementById('faceCountText').textContent = `Jumlah wajah yang terdeteksi ada ${faceCount} wajah.`;
+        };
+
+        // Handle Contour-based Segmentation form submission
+        document.getElementById('uploadFormContour').onsubmit = async function (event) {
+            event.preventDefault();
+            const fileInput = document.getElementById('uploadContour');
+            const formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+
+            const response = await fetch('/upload/contour/', {
+                method: 'POST',
+                body: formData
+            });
+
+            const imgBlob = await response.blob();
+            const imgUrl = URL.createObjectURL(imgBlob);
+
+            document.getElementById('contourImg').src = imgUrl;
+            document.getElementById('originalContourImg').src = URL.createObjectURL(fileInput.files[0]);
+        };
+
+        // Handle Color Space Conversion form submission
+        document.getElementById('uploadFormColorSpace').onsubmit = async function (event) {
+            event.preventDefault();
+            const fileInput = document.getElementById('uploadColorSpace');
+            const colorSpace = document.getElementById('colorSpace').value;
+            const formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+
+            const response = await fetch(`/upload/color-space/?color_space=${colorSpace}`, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                const errorMessage = await response.json();
+                alert(`Error: ${errorMessage.error}`);
+                return;
+            }
+
+            const imgBlob = await response.blob();
+            const imgUrl = URL.createObjectURL(imgBlob);
+
+            document.getElementById('convertedColorSpaceImg').src = imgUrl;
+            document.getElementById('originalColorSpaceImg').src = URL.createObjectURL(fileInput.files[0]);
+        };
+
+         // Handle Normalization form submission
+        document.getElementById('uploadFormNormalize').onsubmit = async function (event) {
+            event.preventDefault();
+            const fileInput = document.getElementById('uploadNormalize');
+            const formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+
+            const response = await fetch('/upload/normalize/', {
+                method: 'POST',
+                body: formData
+            });
+
+            const imgBlob = await response.blob();
+            const imgUrl = URL.createObjectURL(imgBlob);
+
+            document.getElementById('normalizedImg').src = imgUrl;
+            document.getElementById('originalNormalizeImg').src = URL.createObjectURL(fileInput.files[0]);
+        };
+
+         // Handle Unsharp Masking form submission
+         document.getElementById('uploadFormUnsharpMasking').onsubmit = async function (event) {
+            event.preventDefault();
+            const fileInput = document.getElementById('uploadUnsharpMasking');
+            const maskingLevel = document.getElementById('maskingLevel').value;
+            const formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+            
+            // Fetch unsharp masking image
+            const response = await fetch(`/upload/unsharp_masking/?masking_level=${maskingLevel}`, {
+                method: 'POST',
+                body: formData
+            });
+    
+            // Get the processed image as a Blob and display it
+            const imgBlob = await response.blob();
+            const imgUrl = URL.createObjectURL(imgBlob);
+    
+            document.getElementById('unsharpMaskedImg').src = imgUrl;
+            document.getElementById('originalUnsharpMaskingImg').src = URL.createObjectURL(fileInput.files[0]);
+        };
+        
+    </script>
+</body>
+</html>
